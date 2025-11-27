@@ -109,18 +109,46 @@ def normalize_name(name: str) -> Optional[str]:
     
     # remove common titles and suffixes
     titles = [
-        r'\bmr\.?\b', r'\bmrs\.?\b', r'\bms\.?\b', r'\bdr\.?\b', r'\bprof\.?\b',
-        r'\brev\.?\b', r'\bfr\.?\b', r'\bmsgr\.?\b', r'\bgov\.?\b', r'\brep\.?\b',
-        r'\bsen\.?\b', r'\bamb\.?\b', r'\bthe hon\.?\b', r'\besq\.?\b',
-        r'\bjr\.?\b', r'\bsr\.?\b', r'\bi+\b', r'\bii+\b', r'\biii+\b', r'\biv\b', r'\bv\b',
-        r'\bphd\b', r'\bmd\b', r'\bdds\b', r'\bdo\b', r'\bdvm\b', r'\bcpa\b',
-        r'\blld\b', r'\bdc\b', r'\bvm\b', r'\bret\.?\b', r'\bmiss\b'
+        r'\bmr\.?\s*',
+        r'\bmrs\.?\s*',
+        r'\bms\.?\s*',
+        r'\bmiss\.?\s*',
+        r'\bdr\.?\s*',
+        r'\bprof\.?\s*',
+        r'\brev\.?\s*',
+        r'\bfr\.?\s*',
+        r'\bmsgr\.?\s*',
+        r'\bgov\.?\s*',
+        r'\brep\.?\s*',
+        r'\bsen\.?\s*',
+        r'\bamb\.?\s*',
+        r'\bthe\s+hon\.?\s*',
+        # suffixes (these come after the name)
+        r'\s+esq\.?\s*',
+        r'\s+jr\.?\s*',
+        r'\s+sr\.?\s*',
+        r'\s+i+\s*',
+        r'\s+ii+\s*',
+        r'\s+iii+\s*',
+        r'\s+iv\s*',
+        r'\s+v\s*',
+        r'\s+phd\.?\s*',
+        r'\s+md\.?\s*',
+        r'\s+dds\.?\s*',
+        r'\s+do\.?\s*',
+        r'\s+dvm\.?\s*',
+        r'\s+cpa\.?\s*',
+        r'\s+lld\.?\s*',
+        r'\s+dc\.?\s*',
+        r'\s+vm\.?\s*',
+        r'\s+ret\.?\s*',
     ]
     
     for title in titles:
-        name = re.sub(title, '', name, flags=re.IGNORECASE)
+        name = re.sub(title, ' ', name, flags=re.IGNORECASE)
     
-    # clean up extra spaces
+    # clean up extra spaces and any remaining standalone periods
+    name = re.sub(r'\s*\.\s*', ' ', name)  # remove standalone periods
     name = re.sub(r'\s+', ' ', name).strip()
     
     return name if name else None
