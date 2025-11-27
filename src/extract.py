@@ -1,7 +1,3 @@
-"""
-Extract module - Load data from CSV, Parquet, and YAML files
-"""
-
 import pandas as pd
 import yaml
 from pathlib import Path
